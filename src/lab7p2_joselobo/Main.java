@@ -25,13 +25,22 @@ public class Main extends javax.swing.JFrame {
         Crear_Carpeta = new javax.swing.JMenuItem();
         Crear_Archivo = new javax.swing.JMenuItem();
         Eliminar_Carpeta = new javax.swing.JMenuItem();
+        Decargar_Carpeta = new javax.swing.JMenuItem();
         menu_popup_Archivo = new javax.swing.JPopupMenu();
-        Eliminar_Carpeta1 = new javax.swing.JMenuItem();
+        Eliminar_Archivo = new javax.swing.JMenuItem();
+        Descargar_Archivo = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        JL_Principal = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
-        jLabel1 = new javax.swing.JLabel();
+        JTree = new javax.swing.JTree();
+        lb_Administracion = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        JL_Descargas = new javax.swing.JList<>();
+        lb_RecienDescargado = new javax.swing.JLabel();
+        JP_Archivos = new javax.swing.JProgressBar();
+        JP_Carpeta = new javax.swing.JProgressBar();
+        jl_Carpeta = new javax.swing.JLabel();
+        jl_Archivos = new javax.swing.JLabel();
 
         Crear_Carpeta.setText("Crear Carpeta");
         menu_popup_Carpeta.add(Crear_Carpeta);
@@ -42,30 +51,52 @@ public class Main extends javax.swing.JFrame {
         Eliminar_Carpeta.setText("Eliminar");
         menu_popup_Carpeta.add(Eliminar_Carpeta);
 
-        Eliminar_Carpeta1.setText("Eliminar");
-        menu_popup_Archivo.add(Eliminar_Carpeta1);
+        Decargar_Carpeta.setText("Descargar Carpeta");
+        menu_popup_Carpeta.add(Decargar_Carpeta);
+
+        Eliminar_Archivo.setText("Eliminar");
+        menu_popup_Archivo.add(Eliminar_Archivo);
+
+        Descargar_Archivo.setText("jMenuItem1");
+        menu_popup_Archivo.add(Descargar_Archivo);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Google Drive");
 
-        jList1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        JL_Principal.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        JL_Principal.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Mi Unidad", "Destacados", "Papeleria" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(JL_Principal);
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        jTree1.addMouseListener(new java.awt.event.MouseAdapter() {
+        JTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        JTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTree1MouseClicked(evt);
+                JTreeMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(jTree1);
+        jScrollPane2.setViewportView(JTree);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setText("Administracion");
+        lb_Administracion.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lb_Administracion.setText("Administracion");
+
+        jScrollPane3.setViewportView(JL_Descargas);
+
+        lb_RecienDescargado.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lb_RecienDescargado.setText("Recien Descargado");
+
+        JP_Archivos.setStringPainted(true);
+
+        JP_Carpeta.setStringPainted(true);
+
+        jl_Carpeta.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jl_Carpeta.setText("Carpeta");
+
+        jl_Archivos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jl_Archivos.setText("Archivos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -76,29 +107,53 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JP_Archivos, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(lb_RecienDescargado)
+                                    .addGap(64, 64, 64)))
+                            .addComponent(JP_Carpeta, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jl_Carpeta)
+                            .addComponent(jl_Archivos)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(236, 236, 236)
-                        .addComponent(jLabel1)))
-                .addContainerGap(204, Short.MAX_VALUE))
+                        .addComponent(lb_Administracion)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addContainerGap(8, Short.MAX_VALUE)
+                .addComponent(lb_Administracion)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jl_Carpeta)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JP_Carpeta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addComponent(jl_Archivos)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JP_Archivos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lb_RecienDescargado)
+                .addGap(17, 17, 17)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTree1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MouseClicked
+    private void JTreeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JTreeMouseClicked
         // TODO add your handling code here:
         if (evt.isMetaDown()) {
             //seleccionar un nodo con click derecho
@@ -122,7 +177,7 @@ public class Main extends javax.swing.JFrame {
             }
 
         }
-    }//GEN-LAST:event_jTree1MouseClicked
+    }//GEN-LAST:event_JTreeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -162,13 +217,22 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Crear_Archivo;
     private javax.swing.JMenuItem Crear_Carpeta;
+    private javax.swing.JMenuItem Decargar_Carpeta;
+    private javax.swing.JMenuItem Descargar_Archivo;
+    private javax.swing.JMenuItem Eliminar_Archivo;
     private javax.swing.JMenuItem Eliminar_Carpeta;
-    private javax.swing.JMenuItem Eliminar_Carpeta1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JList<String> JL_Descargas;
+    private javax.swing.JList<String> JL_Principal;
+    private javax.swing.JProgressBar JP_Archivos;
+    private javax.swing.JProgressBar JP_Carpeta;
+    private javax.swing.JTree JTree;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTree jTree1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel jl_Archivos;
+    private javax.swing.JLabel jl_Carpeta;
+    private javax.swing.JLabel lb_Administracion;
+    private javax.swing.JLabel lb_RecienDescargado;
     private javax.swing.JPopupMenu menu_popup_Archivo;
     private javax.swing.JPopupMenu menu_popup_Carpeta;
     // End of variables declaration//GEN-END:variables
