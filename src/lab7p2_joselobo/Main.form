@@ -12,6 +12,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Crear Carpeta"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Crear_CarpetaActionPerformed"/>
+          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="Crear_Archivo">
           <Properties>
@@ -44,6 +47,34 @@
         <MenuItem class="javax.swing.JMenuItem" name="Descargar_Archivo">
           <Properties>
             <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+          </Properties>
+        </MenuItem>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPopupMenu" name="menu_popup_Root">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <MenuItem class="javax.swing.JMenuItem" name="Crear_CarpetaRoot">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Crear Carpeta"/>
+          </Properties>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="Crear_ArchivoRoot">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Crear Archivo"/>
+          </Properties>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="Eliminar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Eliminar"/>
+          </Properties>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="Decargar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Descargar Carpeta"/>
           </Properties>
         </MenuItem>
       </SubComponents>
@@ -91,8 +122,8 @@
                               </Group>
                           </Group>
                           <Component id="JP_Carpeta" min="-2" pref="262" max="-2" attributes="0"/>
-                          <Component id="jl_Carpeta" min="-2" max="-2" attributes="0"/>
-                          <Component id="jl_Archivos" min="-2" max="-2" attributes="0"/>
+                          <Component id="lb_Carpeta" min="-2" max="-2" attributes="0"/>
+                          <Component id="lb_Archivos" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -112,11 +143,11 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jl_Carpeta" min="-2" max="-2" attributes="0"/>
+                      <Component id="lb_Carpeta" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="JP_Carpeta" min="-2" pref="24" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                      <Component id="jl_Archivos" min="-2" max="-2" attributes="0"/>
+                      <Component id="lb_Archivos" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="JP_Archivos" min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
@@ -155,6 +186,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="JL_PrincipalValueChanged"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -225,7 +259,7 @@
         <Property name="stringPainted" type="boolean" value="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jl_Carpeta">
+    <Component class="javax.swing.JLabel" name="lb_Carpeta">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>
@@ -233,7 +267,7 @@
         <Property name="text" type="java.lang.String" value="Carpeta"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jl_Archivos">
+    <Component class="javax.swing.JLabel" name="lb_Archivos">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="1"/>

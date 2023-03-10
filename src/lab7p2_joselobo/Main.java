@@ -1,6 +1,14 @@
 package lab7p2_joselobo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
@@ -10,6 +18,25 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         this.setLocationRelativeTo(null);
+        File fichero = new File("./Datos.dt");
+        if (fichero.exists()) {
+            todo = new Total();
+        } else {
+            FileInputStream entrada = null;
+            ObjectInputStream objeto = null;
+            try {
+                entrada = new FileInputStream(fichero);
+                objeto = new ObjectInputStream(entrada);
+                todo = (Total) objeto.readObject();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                objeto.close();
+                entrada.close();
+            } catch (IOException ex) {
+            }
+        }
     }
 
     /**
@@ -29,6 +56,11 @@ public class Main extends javax.swing.JFrame {
         menu_popup_Archivo = new javax.swing.JPopupMenu();
         Eliminar_Archivo = new javax.swing.JMenuItem();
         Descargar_Archivo = new javax.swing.JMenuItem();
+        menu_popup_Root = new javax.swing.JPopupMenu();
+        Crear_CarpetaRoot = new javax.swing.JMenuItem();
+        Crear_ArchivoRoot = new javax.swing.JMenuItem();
+        Eliminar = new javax.swing.JMenuItem();
+        Decargar = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         JL_Principal = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -39,10 +71,15 @@ public class Main extends javax.swing.JFrame {
         lb_RecienDescargado = new javax.swing.JLabel();
         JP_Archivos = new javax.swing.JProgressBar();
         JP_Carpeta = new javax.swing.JProgressBar();
-        jl_Carpeta = new javax.swing.JLabel();
-        jl_Archivos = new javax.swing.JLabel();
+        lb_Carpeta = new javax.swing.JLabel();
+        lb_Archivos = new javax.swing.JLabel();
 
         Crear_Carpeta.setText("Crear Carpeta");
+        Crear_Carpeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crear_CarpetaActionPerformed(evt);
+            }
+        });
         menu_popup_Carpeta.add(Crear_Carpeta);
 
         Crear_Archivo.setText("Crear Archivo");
@@ -60,6 +97,18 @@ public class Main extends javax.swing.JFrame {
         Descargar_Archivo.setText("jMenuItem1");
         menu_popup_Archivo.add(Descargar_Archivo);
 
+        Crear_CarpetaRoot.setText("Crear Carpeta");
+        menu_popup_Root.add(Crear_CarpetaRoot);
+
+        Crear_ArchivoRoot.setText("Crear Archivo");
+        menu_popup_Root.add(Crear_ArchivoRoot);
+
+        Eliminar.setText("Eliminar");
+        menu_popup_Root.add(Eliminar);
+
+        Decargar.setText("Descargar Carpeta");
+        menu_popup_Root.add(Decargar);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Google Drive");
 
@@ -68,6 +117,11 @@ public class Main extends javax.swing.JFrame {
             String[] strings = { "Mi Unidad", "Destacados", "Papeleria" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
+        });
+        JL_Principal.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                JL_PrincipalValueChanged(evt);
+            }
         });
         jScrollPane1.setViewportView(JL_Principal);
 
@@ -92,11 +146,11 @@ public class Main extends javax.swing.JFrame {
 
         JP_Carpeta.setStringPainted(true);
 
-        jl_Carpeta.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jl_Carpeta.setText("Carpeta");
+        lb_Carpeta.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lb_Carpeta.setText("Carpeta");
 
-        jl_Archivos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jl_Archivos.setText("Archivos");
+        lb_Archivos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lb_Archivos.setText("Archivos");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,8 +172,8 @@ public class Main extends javax.swing.JFrame {
                                     .addComponent(lb_RecienDescargado)
                                     .addGap(64, 64, 64)))
                             .addComponent(JP_Carpeta, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jl_Carpeta)
-                            .addComponent(jl_Archivos)))
+                            .addComponent(lb_Carpeta)
+                            .addComponent(lb_Archivos)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(236, 236, 236)
                         .addComponent(lb_Administracion)))
@@ -133,11 +187,11 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jl_Carpeta)
+                        .addComponent(lb_Carpeta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(JP_Carpeta, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(9, 9, 9)
-                        .addComponent(jl_Archivos)
+                        .addComponent(lb_Archivos)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(JP_Archivos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -157,27 +211,51 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.isMetaDown()) {
             //seleccionar un nodo con click derecho
-            int row = jt_personas.getClosestRowForLocation(
+            int row = JTree.getClosestRowForLocation(
                     evt.getX(), evt.getY());
-            jt_personas.setSelectionRow(row);
+            JTree.setSelectionRow(row);
             Object v1
-                    = jt_personas.getSelectionPath().
+                    = JTree.getSelectionPath().
                             getLastPathComponent();
             nodo_seleccionado = (DefaultMutableTreeNode) v1;
-            if (nodo_seleccionado.getUserObject() instanceof Persona) {
-                persona_seleccionada
-                        = (Persona) nodo_seleccionado.
+            if (nodo_seleccionado.getUserObject() instanceof Carpeta) {
+                carpeta_seleccionada
+                        = (Carpeta) nodo_seleccionado.
                                 getUserObject();
                 menu_popup_Carpeta.show(evt.getComponent(),
                         evt.getX(), evt.getY());
+            } else if (nodo_seleccionado.getUserObject() instanceof Archivo) {
+                menu_popup_Archivo.show(evt.getComponent(),
+                        evt.getX(), evt.getY());
             } else {
 
-                MP_Tarea.show(evt.getComponent(),
-                        evt.getX(), evt.getY());
             }
-
         }
     }//GEN-LAST:event_JTreeMouseClicked
+
+    private void JL_PrincipalValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_JL_PrincipalValueChanged
+        // TODO add your handling code here:
+        if (JL_Principal.getSelectedIndex() == 0) {
+            JTree.setModel(todo.getMiUnidad().getModel());
+        }
+        if (JL_Principal.getSelectedIndex() == 1) {
+            JTree.setModel(todo.getDestacados().getModel());
+        }
+        if (JL_Principal.getSelectedIndex() == 2) {
+            JTree.setModel(todo.getPapeleria().getModel());
+        }
+        DefaultTreeModel T = (DefaultTreeModel) JTree.getModel();
+        T.reload();
+    }//GEN-LAST:event_JL_PrincipalValueChanged
+
+    private void Crear_CarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crear_CarpetaActionPerformed
+        // TODO add your handling code here:
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        nodo_seleccionado.getUserObject();
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(Modelo);
+        String nombre = JOptionPane.showInputDialog(this, "Ingrese el Nombre", "Nombre", -1);
+
+    }//GEN-LAST:event_Crear_CarpetaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,11 +292,30 @@ public class Main extends javax.swing.JFrame {
         });
     }
 
+    public String GenerarAleatorio(int numero) {
+        String temp = "";
+        for (int i = 0; i < numero; i++) {
+            int letra_numero = (int) (Math.random() * 1);
+            if (letra_numero == 1) {
+                //letra minusculas
+                temp += (char) ((int) (Math.random() * 25) + 97);
+            } else {
+                //numero
+                temp += (char) ((int) (Math.random() * 9) + 48);
+            }
+        }
+        return temp;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Crear_Archivo;
+    private javax.swing.JMenuItem Crear_ArchivoRoot;
     private javax.swing.JMenuItem Crear_Carpeta;
+    private javax.swing.JMenuItem Crear_CarpetaRoot;
+    private javax.swing.JMenuItem Decargar;
     private javax.swing.JMenuItem Decargar_Carpeta;
     private javax.swing.JMenuItem Descargar_Archivo;
+    private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Eliminar_Archivo;
     private javax.swing.JMenuItem Eliminar_Carpeta;
     private javax.swing.JList<String> JL_Descargas;
@@ -229,11 +326,19 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel jl_Archivos;
-    private javax.swing.JLabel jl_Carpeta;
     private javax.swing.JLabel lb_Administracion;
+    private javax.swing.JLabel lb_Archivos;
+    private javax.swing.JLabel lb_Carpeta;
     private javax.swing.JLabel lb_RecienDescargado;
     private javax.swing.JPopupMenu menu_popup_Archivo;
     private javax.swing.JPopupMenu menu_popup_Carpeta;
+    private javax.swing.JPopupMenu menu_popup_Root;
     // End of variables declaration//GEN-END:variables
+
+    //Mis Variables
+    DefaultMutableTreeNode nodo_seleccionado;
+    Carpeta carpeta_seleccionada;
+    Archivo archivo_seleccionada;
+    Total todo;
+
 }
