@@ -3,6 +3,8 @@ package lab7p2_joselobo;
 import java.io.Serializable;
 import javax.swing.JList;
 import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 public class Total implements Serializable {
 
@@ -54,6 +56,25 @@ public class Total implements Serializable {
 
     public void setDescarga(JList Descarga) {
         this.Descarga = Descarga;
+    }
+
+    public void setModelUnidad(JTree a) {
+        DefaultTreeModel modeloA = (DefaultTreeModel) a.getModel();
+        MiUnidad.setModel(modeloA);
+        ((DefaultTreeModel) MiUnidad.getModel()).reload();
+    }
+
+    public void addRecicle(DefaultMutableTreeNode a) {
+        javax.swing.tree.DefaultMutableTreeNode b = new javax.swing.tree.DefaultMutableTreeNode("Mi Unidad");
+        b = a;
+        DefaultTreeModel modeloPapeleria = (DefaultTreeModel) Papeleria.getModel();
+        DefaultMutableTreeNode raiz = (DefaultMutableTreeNode) modeloPapeleria.getRoot();
+        raiz.add(a);
+        modeloPapeleria.reload();
+    }
+
+    public void addFavorito(DefaultMutableTreeNode a) {
+
     }
 
 }

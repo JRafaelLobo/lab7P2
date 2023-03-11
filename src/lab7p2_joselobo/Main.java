@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.security.cert.Extension;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -18,10 +19,8 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         this.setLocationRelativeTo(null);
-        File fichero = new File("./Datos.dt");
-        if (fichero.exists()) {
-            todo = new Total();
-        } else {
+        try {
+            File fichero = new File("./Datos.dt");
             FileInputStream entrada = null;
             ObjectInputStream objeto = null;
             try {
@@ -29,13 +28,15 @@ public class Main extends javax.swing.JFrame {
                 objeto = new ObjectInputStream(entrada);
                 todo = (Total) objeto.readObject();
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             try {
                 objeto.close();
                 entrada.close();
             } catch (IOException ex) {
             }
+        } catch (Exception e) {
+            todo = new Total();
         }
     }
 
@@ -53,14 +54,14 @@ public class Main extends javax.swing.JFrame {
         Crear_Archivo = new javax.swing.JMenuItem();
         Eliminar_Carpeta = new javax.swing.JMenuItem();
         Decargar_Carpeta = new javax.swing.JMenuItem();
+        Favoritos_Carpeta = new javax.swing.JMenuItem();
         menu_popup_Archivo = new javax.swing.JPopupMenu();
         Eliminar_Archivo = new javax.swing.JMenuItem();
-        Descargar_Archivo = new javax.swing.JMenuItem();
+        Favoritos_Archivo = new javax.swing.JMenuItem();
         menu_popup_Root = new javax.swing.JPopupMenu();
         Crear_CarpetaRoot = new javax.swing.JMenuItem();
         Crear_ArchivoRoot = new javax.swing.JMenuItem();
         Eliminar = new javax.swing.JMenuItem();
-        Decargar = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         JL_Principal = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -83,31 +84,66 @@ public class Main extends javax.swing.JFrame {
         menu_popup_Carpeta.add(Crear_Carpeta);
 
         Crear_Archivo.setText("Crear Archivo");
+        Crear_Archivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crear_ArchivoActionPerformed(evt);
+            }
+        });
         menu_popup_Carpeta.add(Crear_Archivo);
 
         Eliminar_Carpeta.setText("Eliminar");
+        Eliminar_Carpeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Eliminar_CarpetaActionPerformed(evt);
+            }
+        });
         menu_popup_Carpeta.add(Eliminar_Carpeta);
 
         Decargar_Carpeta.setText("Descargar Carpeta");
         menu_popup_Carpeta.add(Decargar_Carpeta);
 
+        Favoritos_Carpeta.setText("Favoritos");
+        menu_popup_Carpeta.add(Favoritos_Carpeta);
+
         Eliminar_Archivo.setText("Eliminar");
+        Eliminar_Archivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Eliminar_ArchivoActionPerformed(evt);
+            }
+        });
         menu_popup_Archivo.add(Eliminar_Archivo);
 
-        Descargar_Archivo.setText("jMenuItem1");
-        menu_popup_Archivo.add(Descargar_Archivo);
+        Favoritos_Archivo.setText("Favoritos");
+        Favoritos_Archivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Favoritos_ArchivoActionPerformed(evt);
+            }
+        });
+        menu_popup_Archivo.add(Favoritos_Archivo);
 
         Crear_CarpetaRoot.setText("Crear Carpeta");
+        Crear_CarpetaRoot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crear_CarpetaRootActionPerformed(evt);
+            }
+        });
         menu_popup_Root.add(Crear_CarpetaRoot);
 
         Crear_ArchivoRoot.setText("Crear Archivo");
+        Crear_ArchivoRoot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Crear_ArchivoRootActionPerformed(evt);
+            }
+        });
         menu_popup_Root.add(Crear_ArchivoRoot);
 
         Eliminar.setText("Eliminar");
+        Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EliminarActionPerformed(evt);
+            }
+        });
         menu_popup_Root.add(Eliminar);
-
-        Decargar.setText("Descargar Carpeta");
-        menu_popup_Root.add(Decargar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Google Drive");
@@ -125,7 +161,7 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(JL_Principal);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("No se ha seleccionada nada");
         JTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
         JTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -214,21 +250,16 @@ public class Main extends javax.swing.JFrame {
             int row = JTree.getClosestRowForLocation(
                     evt.getX(), evt.getY());
             JTree.setSelectionRow(row);
-            Object v1
-                    = JTree.getSelectionPath().
-                            getLastPathComponent();
+            Object v1 = JTree.getSelectionPath().getLastPathComponent();
             nodo_seleccionado = (DefaultMutableTreeNode) v1;
             if (nodo_seleccionado.getUserObject() instanceof Carpeta) {
-                carpeta_seleccionada
-                        = (Carpeta) nodo_seleccionado.
-                                getUserObject();
-                menu_popup_Carpeta.show(evt.getComponent(),
-                        evt.getX(), evt.getY());
+                carpeta_seleccionada = (Carpeta) nodo_seleccionado.getUserObject();
+                menu_popup_Carpeta.show(evt.getComponent(), evt.getX(), evt.getY());
             } else if (nodo_seleccionado.getUserObject() instanceof Archivo) {
-                menu_popup_Archivo.show(evt.getComponent(),
-                        evt.getX(), evt.getY());
+                archivo_seleccionada = (Archivo) nodo_seleccionado.getUserObject();
+                menu_popup_Archivo.show(evt.getComponent(), evt.getX(), evt.getY());
             } else {
-
+                menu_popup_Root.show(evt.getComponent(), evt.getX(), evt.getY());
             }
         }
     }//GEN-LAST:event_JTreeMouseClicked
@@ -246,16 +277,93 @@ public class Main extends javax.swing.JFrame {
         }
         DefaultTreeModel T = (DefaultTreeModel) JTree.getModel();
         T.reload();
+
     }//GEN-LAST:event_JL_PrincipalValueChanged
 
     private void Crear_CarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crear_CarpetaActionPerformed
         // TODO add your handling code here:
-        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
         nodo_seleccionado.getUserObject();
-        DefaultMutableTreeNode t = new DefaultMutableTreeNode(Modelo);
         String nombre = JOptionPane.showInputDialog(this, "Ingrese el Nombre", "Nombre", -1);
-
+        Carpeta C = new Carpeta(nombre, "google.drive.com/" + GenerarAleatorio(5));
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(C);
+        nodo_seleccionado.add(t);
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        Modelo.reload();
+        todo.setModelUnidad(JTree);
     }//GEN-LAST:event_Crear_CarpetaActionPerformed
+
+    private void Crear_ArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crear_ArchivoActionPerformed
+        // TODO add your handling code here:
+        nodo_seleccionado.getUserObject();
+        String nombre = JOptionPane.showInputDialog(this, "Ingrese el Nombre", "Nombre", -1);
+        String extencion = ".";
+        extencion += JOptionPane.showInputDialog(this, "Ingrese la Extencion", "Extencion", -1);
+        double tam = Double.parseDouble(JOptionPane.showInputDialog(this, "Ingrese el tama\u00f1o", "Tama\u00f1o", -1));
+
+        Archivo C = new Archivo(nombre, "google.drive.com/" + GenerarAleatorio(5), extencion, tam);
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(C);
+        nodo_seleccionado.add(t);
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        Modelo.reload();
+        todo.setModelUnidad(JTree);
+    }//GEN-LAST:event_Crear_ArchivoActionPerformed
+
+    private void Crear_CarpetaRootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crear_CarpetaRootActionPerformed
+        // TODO add your handling code here:
+        nodo_seleccionado.getUserObject();
+        String nombre = JOptionPane.showInputDialog(this, "Ingrese el Nombre", "Nombre", -1);
+        Carpeta C = new Carpeta(nombre, "google.drive.com/" + GenerarAleatorio(5));
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(C);
+        nodo_seleccionado.add(t);
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        Modelo.reload();
+        todo.setModelUnidad(JTree);
+    }//GEN-LAST:event_Crear_CarpetaRootActionPerformed
+
+    private void Crear_ArchivoRootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Crear_ArchivoRootActionPerformed
+        // TODO add your handling code here:
+        nodo_seleccionado.getUserObject();
+        String nombre = JOptionPane.showInputDialog(this, "Ingrese el Nombre", "Nombre", -1);
+        String extencion = ".";
+        extencion += JOptionPane.showInputDialog(this, "Ingrese la Extencion", "Extencion", -1);
+        double tam = Double.parseDouble(JOptionPane.showInputDialog(this, "Ingrese el tama\u00f1o", "Tama\u00f1o", -1));
+
+        Archivo C = new Archivo(nombre, "google.drive.com/" + GenerarAleatorio(5), extencion, tam);
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(C);
+        nodo_seleccionado.add(t);
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        Modelo.reload();
+        todo.setModelUnidad(JTree);
+
+    }//GEN-LAST:event_Crear_ArchivoRootActionPerformed
+
+    private void Eliminar_ArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_ArchivoActionPerformed
+        // TODO add your handling code here:
+        todo.addRecicle(nodo_seleccionado);
+        nodo_seleccionado.removeFromParent();
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        Modelo.reload();
+    }//GEN-LAST:event_Eliminar_ArchivoActionPerformed
+
+    private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
+        // TODO add your handling code here:
+        todo.addRecicle(nodo_seleccionado);
+        nodo_seleccionado.removeFromParent();
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        Modelo.reload();
+    }//GEN-LAST:event_EliminarActionPerformed
+
+    private void Eliminar_CarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Eliminar_CarpetaActionPerformed
+        // TODO add your handling code here:
+        todo.addRecicle(nodo_seleccionado);
+        nodo_seleccionado.removeFromParent();
+        DefaultTreeModel Modelo = (DefaultTreeModel) JTree.getModel();
+        Modelo.reload();
+    }//GEN-LAST:event_Eliminar_CarpetaActionPerformed
+
+    private void Favoritos_ArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Favoritos_ArchivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Favoritos_ArchivoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -312,12 +420,12 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JMenuItem Crear_ArchivoRoot;
     private javax.swing.JMenuItem Crear_Carpeta;
     private javax.swing.JMenuItem Crear_CarpetaRoot;
-    private javax.swing.JMenuItem Decargar;
     private javax.swing.JMenuItem Decargar_Carpeta;
-    private javax.swing.JMenuItem Descargar_Archivo;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Eliminar_Archivo;
     private javax.swing.JMenuItem Eliminar_Carpeta;
+    private javax.swing.JMenuItem Favoritos_Archivo;
+    private javax.swing.JMenuItem Favoritos_Carpeta;
     private javax.swing.JList<String> JL_Descargas;
     private javax.swing.JList<String> JL_Principal;
     private javax.swing.JProgressBar JP_Archivos;

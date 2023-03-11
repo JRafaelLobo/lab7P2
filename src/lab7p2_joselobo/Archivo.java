@@ -49,7 +49,7 @@ public class Archivo {
 
     @Override
     public String toString() {
-        return nombre;
+        return nombre + extencion;
     }
 
 }
