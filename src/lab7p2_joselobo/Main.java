@@ -2,8 +2,10 @@ package lab7p2_joselobo;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.cert.Extension;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -21,6 +23,22 @@ public class Main extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         try {
+            FileOutputStream fw = null;
+            ObjectOutputStream bw = null;
+            try {
+                File fichero = new File("./Datos.dt");
+                fw = new FileOutputStream(fichero);
+                bw = new ObjectOutputStream(fw);
+                bw.writeObject(todo);
+                bw.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                bw.close();
+                fw.close();
+            } catch (Exception e) {
+            }
             File fichero = new File("./Datos.dt");
             FileInputStream entrada = null;
             ObjectInputStream objeto = null;
@@ -103,6 +121,11 @@ public class Main extends javax.swing.JFrame {
         menu_popup_Carpeta.add(Eliminar_Carpeta);
 
         Decargar_Carpeta.setText("Descargar Carpeta");
+        Decargar_Carpeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Decargar_CarpetaActionPerformed(evt);
+            }
+        });
         menu_popup_Carpeta.add(Decargar_Carpeta);
 
         Favoritos_Carpeta.setText("Favoritos");
@@ -367,6 +390,12 @@ public class Main extends javax.swing.JFrame {
     private void Favoritos_ArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Favoritos_ArchivoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Favoritos_ArchivoActionPerformed
+
+    private void Decargar_CarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Decargar_CarpetaActionPerformed
+        // TODO add your handling code here:
+        DescargarCarpeta Des = new DescargarCarpeta(JP_Carpeta, JP_Archivos, nodo_seleccionado);
+        Des.start();
+    }//GEN-LAST:event_Decargar_CarpetaActionPerformed
 
     /**
      * @param args the command line arguments

@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JProgressBar;
 
-public class DescargarArchivo implements Runnable {
+public class DescargarArchivo extends Thread {
 
     JProgressBar ProgresBar;
     double Peso;
