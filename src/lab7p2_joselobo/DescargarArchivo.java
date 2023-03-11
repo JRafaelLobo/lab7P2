@@ -1,5 +1,7 @@
 package lab7p2_joselobo;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JProgressBar;
 
 public class DescargarArchivo implements Runnable {
@@ -14,12 +16,15 @@ public class DescargarArchivo implements Runnable {
 
     @Override
     public void run() {
-        ProgresBar.setMaximum(peso/10);
-        while (en.hasMoreElements()) {
-            Object nextElement = en.nextElement();
-            
+        ProgresBar.setMaximum((int) (Peso / 10));
+        while (ProgresBar.getMaximum() != ((int) (Peso / 10))) {
+            ProgresBar.setValue(ProgresBar.getValue() + 1);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+            }
         }
-        
+
     }
 
 }

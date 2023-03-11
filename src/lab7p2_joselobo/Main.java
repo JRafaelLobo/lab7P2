@@ -18,6 +18,7 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
+
         this.setLocationRelativeTo(null);
         try {
             File fichero = new File("./Datos.dt");
@@ -38,6 +39,8 @@ public class Main extends javax.swing.JFrame {
         } catch (Exception e) {
             todo = new Total();
         }
+        CopiaThread A = new CopiaThread(todo);
+        A.start();
     }
 
     /**
