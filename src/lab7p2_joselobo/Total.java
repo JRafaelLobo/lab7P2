@@ -13,7 +13,7 @@ public class Total implements Serializable {
     private JTree Papeleria = new JTree();
     private JList Descarga = new JList();
 
-    private final long SerialVersionUID = 7773224235L;
+    //private final long SerialVersionUID = 7773224235L;
 
     public Total() {
         javax.swing.tree.DefaultMutableTreeNode a = new javax.swing.tree.DefaultMutableTreeNode("Mi Unidad");
