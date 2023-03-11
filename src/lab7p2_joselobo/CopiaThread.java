@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class CopiaThread extends Thread {
+
     Total t;
 
     public CopiaThread(Total t) {
@@ -20,6 +21,11 @@ public class CopiaThread extends Thread {
     @Override
     public void run() {
         while (true) {
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(CopiaThread.class.getName()).log(Level.SEVERE, null, ex);
+            }
             FileOutputStream fw = null;
             ObjectOutputStream bw = null;
             try {
@@ -35,11 +41,6 @@ public class CopiaThread extends Thread {
                 bw.close();
                 fw.close();
             } catch (IOException ex) {
-            }
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(CopiaThread.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }

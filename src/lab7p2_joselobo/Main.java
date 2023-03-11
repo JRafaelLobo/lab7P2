@@ -23,31 +23,16 @@ public class Main extends javax.swing.JFrame {
 
         this.setLocationRelativeTo(null);
         try {
-            FileOutputStream fw = null;
-            ObjectOutputStream bw = null;
-            try {
-                File fichero = new File("./Datos.dt");
-                fw = new FileOutputStream(fichero);
-                bw = new ObjectOutputStream(fw);
-                bw.writeObject(todo);
-                bw.flush();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                bw.close();
-                fw.close();
-            } catch (Exception e) {
-            }
             File fichero = new File("./Datos.dt");
             FileInputStream entrada = null;
             ObjectInputStream objeto = null;
             try {
                 entrada = new FileInputStream(fichero);
                 objeto = new ObjectInputStream(entrada);
+                todo = new Total("a");
                 todo = (Total) objeto.readObject();
             } catch (Exception e) {
-                //e.printStackTrace();
+                // e.printStackTrace();
             }
             try {
                 objeto.close();
